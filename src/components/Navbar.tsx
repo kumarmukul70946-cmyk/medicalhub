@@ -21,7 +21,6 @@ export default function Navbar() {
                     <Link href="/" className={styles.navLink}>Home</Link>
                     <Link href="/doctors" className={styles.navLink}>Doctors</Link>
                     <Link href="/book-appointment" className={styles.navLink}>Appointments</Link>
-                    <Link href="/login" className={styles.navLink}>Login</Link>
                 </div>
 
                 <div className={styles.navActions}>
@@ -57,7 +56,6 @@ export default function Navbar() {
                         <Link href="/" className={styles.mobileNavLink} onClick={() => setMobileMenuOpen(false)}>Home</Link>
                         <Link href="/doctors" className={styles.mobileNavLink} onClick={() => setMobileMenuOpen(false)}>Doctors</Link>
                         <Link href="/book-appointment" className={styles.mobileNavLink} onClick={() => setMobileMenuOpen(false)}>Appointments</Link>
-                        <Link href="/login" className={styles.mobileNavLink} onClick={() => setMobileMenuOpen(false)}>Login</Link>
                         <div className={styles.mobileMenuActions}>
                             <Link href="/book-appointment" style={{ width: '100%' }}>
                                 <button className="btn btn-primary" style={{ width: '100%' }}>Book Appointment</button>

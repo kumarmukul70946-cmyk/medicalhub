@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import styles from "@/app/page.module.css";
 import { User, Activity, Clock, ShieldCheck } from "lucide-react";
+import Link from "next/link";
 
 export default function DoctorsPage() {
     const doctors = [
@@ -50,7 +51,9 @@ export default function DoctorsPage() {
                                     </div>
                                 </div>
 
-                                <button className="btn btn-outline" style={{ width: '100%' }}>View Profile</button>
+                                <Link href={`/doctors/${doc.name.toLowerCase().replace(/\./g, '').replace(/\s+/g, '-')}`} style={{ width: '100%' }}>
+                                    <button className="btn btn-outline" style={{ width: '100%' }}>View Profile</button>
+                                </Link>
                             </div>
                         ))}
                     </div>
