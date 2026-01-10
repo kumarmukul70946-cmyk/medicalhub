@@ -2,6 +2,8 @@
 
 This is a fullstack Next.js application for MedicalHub , featuring a responsive landing page and an integrated AI-powered chatbot.
 
+**Live Demo:** [https://medicalhub-kappa.vercel.app/](https://medicalhub-kappa.vercel.app/)
+
 ## Features
 
 - **Premium Design**: Modern, clean, and professional medical service interface.
