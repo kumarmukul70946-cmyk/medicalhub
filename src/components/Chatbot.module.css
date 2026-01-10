@@ -52,6 +52,9 @@
 .header button {
     color: white;
     opacity: 0.8;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .header button:hover {
@@ -150,6 +153,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .inputArea button:disabled {
@@ -191,5 +197,15 @@
 
     40% {
         transform: scale(1);
+    }
+}
+
+@media (max-width: 480px) {
+    .chatWindow {
+        right: 1rem;
+        left: 1rem;
+        width: auto;
+        bottom: 6rem;
+        height: 60vh;
     }
 }

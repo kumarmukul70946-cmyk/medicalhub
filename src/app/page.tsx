@@ -1,56 +1,24 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Activity,
   Phone,
-  Calendar,
   CheckCircle,
   ArrowRight,
-  Menu, X, Heart, ShieldCheck, Stethoscope, MapPin
+  Heart,
+  Stethoscope
 } from "lucide-react";
-import { useState } from "react";
 import Chatbot from "@/components/Chatbot";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import styles from "./page.module.css";
+import Link from "next/link";
 
 export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
     <main className={styles.main}>
-      {/* Navigation */}
-      <nav className={styles.nav}>
-        <div className={styles.navContainer}>
-          <div className={styles.logo}>
-            <Activity className="text-primary" size={32} />
-            <span>HealthHub</span>
-          </div>
-
-          <div className={styles.navLinks}>
-            <Link href="#" className={styles.navLink}>Home</Link>
-            <Link href="#about" className={styles.navLink}>About</Link>
-            <Link href="#services" className={styles.navLink}>Services</Link>
-            <Link href="#doctors" className={styles.navLink}>Doctors</Link>
-            <Link href="#contact" className={styles.navLink}>Contact</Link>
-          </div>
-
-          <div className={styles.navActions}>
-            <button className="btn btn-outline">Patient Login</button>
-            <button className="btn btn-primary">
-              <Calendar size={18} style={{ marginRight: '0.5rem' }} />
-              Book Appointment
-            </button>
-          </div>
-
-          <button
-            className="md:hidden p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X /> : <Menu />}
-          </button>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero Section */}
       <section className={styles.hero}>
@@ -72,12 +40,16 @@ export default function Home() {
               Comprehensive healthcare solutions designed to meet all your medical needs with excellence and compassion.
             </p>
             <div className={styles.heroButtons}>
-              <button className="btn btn-primary">
-                Book Appointment
-              </button>
-              <button className="btn btn-outline">
-                Learn More
-              </button>
+              <Link href="/book-appointment">
+                <button className="btn btn-primary">
+                  Book Appointment
+                </button>
+              </Link>
+              <Link href="#services">
+                <button className="btn btn-outline">
+                  Learn More
+                </button>
+              </Link>
             </div>
           </motion.div>
 
@@ -88,11 +60,38 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             <div className={styles.heroCard}>
-              <div style={{ textAlign: 'center' }}>
-                <Heart size={64} color="var(--primary)" style={{ margin: '0 auto 1rem' }} />
-                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Trusted by</h3>
-                <p style={{ fontSize: '1.25rem', color: '#64748b' }}>10,000+ Patients</p>
-              </div>
+              <img
+                src="/hero-image.png"
+                alt="Medical Team"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+
+              {/* Floating Badge */}
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ repeat: Infinity, duration: 4 }}
+                style={{
+                  position: 'absolute',
+                  bottom: '20px',
+                  left: '20px',
+                  background: 'white',
+                  padding: '1rem',
+                  borderRadius: '1rem',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  color: 'black'
+                }}
+              >
+                <div style={{ background: '#dcfce7', padding: '0.5rem', borderRadius: '50%', color: '#16a34a' }}>
+                  <Heart size={24} fill="#16a34a" />
+                </div>
+                <div>
+                  <p style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: '500' }}>Trusted by</p>
+                  <p style={{ fontWeight: 'bold' }}>10,000+ Patients</p>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -110,40 +109,58 @@ export default function Home() {
             {
               icon: <Activity size={32} />,
               title: "Emergency & Critical Care",
-              desc: "24/7 emergency services with state-of-the-art facilities and expert medical teams."
+              desc: "24/7 emergency services with state-of-the-art facilities and expert medical teams.",
+              link: "/services/emergency"
             },
             {
               icon: <Stethoscope size={32} />,
               title: "Specialized Treatments",
-              desc: "Advanced medical specialties including cardiology, neurology, and more."
+              desc: "Advanced medical specialties including cardiology, neurology, and more.",
+              link: "/services/specialized"
             },
             {
               icon: <Heart size={32} />,
               title: "Preventive Care",
-              desc: "Comprehensive health checkups and preventive medicine for long-term wellness."
+              desc: "Comprehensive health checkups and preventive medicine for long-term wellness.",
+              link: "/services/preventive"
             }
           ].map((service, i) => (
-            <motion.div
-              key={i}
-              className={styles.serviceCard}
-              whileHover={{ y: -5 }}
-            >
-              <div className={styles.iconBox}>
-                {service.icon}
-              </div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.75rem' }}>{service.title}</h3>
-              <p style={{ color: '#64748b', marginBottom: '1.5rem' }}>{service.desc}</p>
-              <div style={{ color: 'var(--primary)', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                Learn More <ArrowRight size={16} />
-              </div>
-            </motion.div>
+            <Link key={i} href={service.link} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+              <motion.div
+                className={styles.serviceCard}
+                whileHover={{ y: -5 }}
+              >
+                <div className={styles.iconBox}>
+                  {service.icon}
+                </div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.75rem' }}>{service.title}</h3>
+                <p style={{ color: '#64748b', marginBottom: '1.5rem' }}>{service.desc}</p>
+                <div style={{ color: 'var(--primary)', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  Learn More <ArrowRight size={16} />
+                </div>
+              </motion.div>
+            </Link>
           ))}
         </div>
       </section>
 
       {/* Emergency Section */}
-      <section className={styles.emergency}>
-        <div className={styles.emergencyContent}>
+      <section className={styles.emergency} style={{ position: 'relative', overflow: 'hidden' }}>
+        {/* Background Image Overlay */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: 'url(/emergency-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.15,
+          zIndex: 0
+        }} />
+
+        <div className={styles.emergencyContent} style={{ position: 'relative', zIndex: 1 }}>
           <div className={styles.emergencyText}>
             <div style={{ display: 'inline-block', padding: '0.25rem 1rem', background: 'rgba(220, 38, 38, 0.2)', color: '#f87171', borderRadius: '999px', fontSize: '0.875rem', fontWeight: 'bold', border: '1px solid rgba(220, 38, 38, 0.3)', marginBottom: '1rem' }}>
               24/7 AVAILABILITY
@@ -162,18 +179,25 @@ export default function Home() {
             </div>
             <button className={styles.emergencyBtn}>
               <Phone size={24} />
-              +91 6200721151
+              +91 9102774718
             </button>
           </div>
 
           <div className={styles.emergencyServices}>
             <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Services</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {['Cardiology & Cardiac Surgery', 'Neurology & Neurosurgery', 'Orthopedics', 'Pediatrics'].map((item, i) => (
-                <div key={i} style={{ padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span>{item}</span>
-                  <ArrowRight size={16} />
-                </div>
+              {[
+                { name: 'Cardiology & Cardiac Surgery', link: '/services/cardiology' },
+                { name: 'Neurology & Neurosurgery', link: '/services/neurology' },
+                { name: 'Orthopedics', link: '/services/orthopedics' },
+                { name: 'Pediatrics', link: '/services/pediatrics' }
+              ].map((item, i) => (
+                <Link key={i} href={item.link} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <div style={{ padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'background 0.2s' }} className="hover:bg-white/10">
+                    <span>{item.name}</span>
+                    <ArrowRight size={16} />
+                  </div>
+                </Link>
               ))}
             </div>
           </div>
@@ -205,70 +229,17 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-              <button className={`btn ${pkg.popular ? 'btn-primary' : 'btn-outline'}`} style={{ width: '100%' }}>
-                Choose Plan
-              </button>
+              <Link href={`/payment?plan=${encodeURIComponent(pkg.name)}&price=${encodeURIComponent(pkg.price)}`} style={{ width: '100%' }}>
+                <button className={`btn ${pkg.popular ? 'btn-primary' : 'btn-outline'}`} style={{ width: '100%' }}>
+                  Choose Plan
+                </button>
+              </Link>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className={styles.footer}>
-        <div className={styles.footerGrid}>
-          <div className={styles.footerCol}>
-            <div className={styles.logo} style={{ marginBottom: '1rem', color: 'white' }}>
-              <Activity />
-              <span>HealthHub</span>
-            </div>
-            <p style={{ lineHeight: '1.6', opacity: 0.8 }}>
-              Providing exceptional healthcare services with compassion and cutting-edge technology.
-            </p>
-          </div>
-
-          <div className={styles.footerCol}>
-            <h4>Quick Links</h4>
-            <ul className={styles.footerList}>
-              <li><Link href="#">Home</Link></li>
-              <li><Link href="#about">About Us</Link></li>
-              <li><Link href="#services">Services</Link></li>
-              <li><Link href="#contact">Contact</Link></li>
-            </ul>
-          </div>
-
-          <div className={styles.footerCol}>
-            <h4>Services</h4>
-            <ul className={styles.footerList}>
-              <li>Emergency Care</li>
-              <li>Cardiology</li>
-              <li>Aurology</li>
-              <li>Pediatrics</li>
-            </ul>
-          </div>
-
-          <div className={styles.footerCol}>
-            <h4>Contact Info</h4>
-            <ul className={styles.footerList}>
-              <li style={{ display: 'flex', gap: '0.75rem' }}>
-                <MapPin size={20} color="var(--primary)" />
-                <span>HealthHub Medical, Vadodara, 391760</span>
-              </li>
-              <li style={{ display: 'flex', gap: '0.75rem' }}>
-                <Phone size={20} color="var(--primary)" />
-                <span>+91 6200721151</span>
-              </li>
-              <li style={{ display: 'flex', gap: '0.75rem' }}>
-                <span>@</span>
-                <span>info@healthhub.com</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className={styles.footerBottom}>
-          © 2026 HealthHub Medical. All rights reserved.
-        </div>
-      </footer>
-
+      <Footer />
       <Chatbot />
     </main>
   );
