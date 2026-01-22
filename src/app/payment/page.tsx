@@ -1,29 +1,26 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
     ShieldCheck,
-    CreditCard,
     ArrowLeft,
     CheckCircle2,
-    Info,
     Lock,
     Stethoscope,
-    Calendar,
-    Clock,
     User,
     Loader2,
-    CheckCircle
+    ArrowRight
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 declare global {
     interface Window {
-        Razorpay: any;
+        Razorpay: new (options: unknown) => { open: () => void };
     }
 }
 
@@ -91,7 +88,7 @@ export default function PaymentPage() {
                 description: `Payment for ${planName}`,
                 image: "/logo.png",
                 order_id: order.id,
-                handler: async function (response: any) {
+                handler: async function (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) {
                     // Verify payment
                     const verifyRes = await fetch("/api/razorpay/verify", {
                         method: "POST",
@@ -174,15 +171,15 @@ export default function PaymentPage() {
                                 <div className="grid md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Full Name</label>
-                                        <input type="text" defaultValue="Mukul Anand" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 font-bold text-slate-700 focus:bg-white focus:border-blue-600 transition-all outline-none" />
+                                        <input title="Full Name" type="text" defaultValue="Mukul Anand" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 font-bold text-slate-700 focus:bg-white focus:border-blue-600 transition-all outline-none" />
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Phone Number</label>
-                                        <input type="text" defaultValue="+91 9102774718" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 font-bold text-slate-700 focus:bg-white focus:border-blue-600 transition-all outline-none" />
+                                        <input title="Phone Number" type="text" defaultValue="+91 9102774718" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 font-bold text-slate-700 focus:bg-white focus:border-blue-600 transition-all outline-none" />
                                     </div>
                                     <div className="md:col-span-2 space-y-2">
                                         <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</label>
-                                        <input type="email" defaultValue="mukul@gmail.com" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 font-bold text-slate-700 focus:bg-white focus:border-blue-600 transition-all outline-none" />
+                                        <input title="Email Address" type="email" defaultValue="mukul@gmail.com" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 font-bold text-slate-700 focus:bg-white focus:border-blue-600 transition-all outline-none" />
                                     </div>
                                 </div>
                             </div>
@@ -269,6 +266,7 @@ export default function PaymentPage() {
                                 <button
                                     onClick={handlePayment}
                                     disabled={processing || !scriptLoaded}
+                                    title="Securely pay for your appointment"
                                     className="w-full py-5 rounded-2xl bg-blue-600 text-white font-black text-lg shadow-xl shadow-blue-100 hover:bg-blue-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                                 >
                                     {processing ? (
@@ -285,9 +283,9 @@ export default function PaymentPage() {
                                 </button>
 
                                 <div className="mt-8 flex items-center justify-center gap-4 opacity-40 grayscale">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" className="h-4" />
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-6" />
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" className="h-4" />
+                                    <Image src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" width={40} height={16} className="h-4 w-auto" />
+                                    <Image src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" width={40} height={24} className="h-6 w-auto" />
+                                    <Image src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" alt="UPI" width={60} height={16} className="h-4 w-auto" />
                                 </div>
                             </div>
                         </div>

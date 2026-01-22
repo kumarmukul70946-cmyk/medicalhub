@@ -36,7 +36,7 @@ export default function HomeSections() {
                             </h1>
 
                             <p className="mt-8 text-xl text-slate-500 leading-relaxed font-medium">
-                                Book world-class specialists, manage your health data, and get instant consultations with India's most modern medical platform.
+                                Book world-class specialists, manage your health data, and get instant consultations with India&apos;s most modern medical platform.
                             </p>
 
                             {/* CTA Buttons */}
@@ -89,7 +89,10 @@ export default function HomeSections() {
                                         <label className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">
                                             Department
                                         </label>
-                                        <select className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-5 py-4 text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-600 transition-all">
+                                        <select
+                                            title="Select Medical Department"
+                                            className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-5 py-4 text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-600 transition-all"
+                                        >
                                             <option>General Physician</option>
                                             <option>Cardiology</option>
                                             <option>Pediatrics</option>
@@ -103,6 +106,7 @@ export default function HomeSections() {
                                                 Date
                                             </label>
                                             <input
+                                                title="Select Appointment Date"
                                                 type="date"
                                                 className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-5 py-4 text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-blue-50 transition-all cursor-pointer"
                                             />
@@ -111,7 +115,10 @@ export default function HomeSections() {
                                             <label className="text-xs font-bold text-slate-400 uppercase tracking-widest pl-1">
                                                 Time Slot
                                             </label>
-                                            <select className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-5 py-4 text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-blue-50 transition-all">
+                                            <select
+                                                title="Select Time Slot"
+                                                className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50/50 px-5 py-4 text-sm font-bold text-slate-700 outline-none focus:ring-4 focus:ring-blue-50 transition-all"
+                                            >
                                                 <option>Morning</option>
                                                 <option>Afternoon</option>
                                                 <option>Evening</option>
@@ -135,8 +142,8 @@ export default function HomeSections() {
                                 <div className="flex gap-1 text-yellow-500 mb-2">
                                     {"★★★★★".split("").map((s, i) => <span key={i}>{s}</span>)}
                                 </div>
-                                <p className="text-xs font-bold text-slate-900">"The fastest medical app I've ever used!"</p>
-                                <p className="text-[10px] text-slate-400 mt-1">- Sameer K.</p>
+                                <p className="text-xs font-bold text-slate-900 tracking-tight">&quot;The fastest medical app I&apos;ve ever used!&quot;</p>
+                                <p className="text-[10px] text-slate-400 mt-1">— Sameer K.</p>
                             </div>
                         </div>
                     </div>

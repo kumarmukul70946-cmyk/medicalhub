@@ -132,6 +132,7 @@ export default function DoctorList() {
                         <div className="relative flex-1 sm:w-56">
                             <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                             <select
+                                title="Filter by Specialization"
                                 value={specialization}
                                 onChange={(e) => setSpecialization(e.target.value)}
                                 className="w-full appearance-none rounded-2xl border-2 border-slate-100 bg-slate-50/50 py-4 pl-12 pr-10 text-sm font-bold text-slate-700 outline-none focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all cursor-pointer"
@@ -153,8 +154,8 @@ export default function DoctorList() {
                             key={sp}
                             onClick={() => setSpecialization(sp)}
                             className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${specialization === sp
-                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
-                                    : 'bg-white border-2 border-slate-100 text-slate-500 hover:border-blue-100 hover:text-blue-600'
+                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+                                : 'bg-white border-2 border-slate-100 text-slate-500 hover:border-blue-100 hover:text-blue-600'
                                 }`}
                         >
                             {sp}
@@ -200,8 +201,8 @@ function DoctorCard({ doc }: { doc: any }) {
         <div className="group rounded-[2.5rem] bg-white border-2 border-slate-50 p-7 shadow-sm hover:shadow-2xl hover:border-blue-100 transition-all duration-300 relative overflow-hidden h-full flex flex-col">
             {/* Status Badge */}
             <div className={`absolute top-6 right-6 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border-2 ${doc.available
-                    ? 'bg-green-50 border-green-100 text-green-600'
-                    : 'bg-slate-50 border-slate-100 text-slate-400'
+                ? 'bg-green-50 border-green-100 text-green-600'
+                : 'bg-slate-50 border-slate-100 text-slate-400'
                 }`}>
                 {doc.available ? "● Available Today" : "○ Fully Booked"}
             </div>

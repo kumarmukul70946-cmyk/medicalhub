@@ -2,7 +2,6 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import styles from "@/app/page.module.css";
 import {
     Activity,
     Heart,
@@ -12,7 +11,8 @@ import {
     Stethoscope,
     CheckCircle,
     Clock,
-    Calendar
+    Calendar,
+    ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -163,129 +163,144 @@ const servicesData: Record<string, Service> = {
 
 export default function ServiceDetail() {
     const params = useParams();
-    // Ensure slug is a string (it could be string | string[])
     const slug = (Array.isArray(params?.slug) ? params.slug[0] : params?.slug) || "cardiology";
-
-    // Normalized lookup (handle casing if needed, though usually slugs are lower)
     const service = servicesData[slug.toLowerCase()] || servicesData["cardiology"];
 
     return (
-        <main className={styles.main} style={{ background: 'var(--background)' }}>
+        <main className="bg-slate-50 min-h-screen">
             <Navbar />
 
-            {/* Hero Section for Service */}
-            <section className={styles.hero} style={{ padding: '140px 1rem 80px', background: '#ffffff' }}>
-                <div className="container" style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
-                    <motion.div
-                        initial={{ scale: 0.5, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        style={{ display: 'inline-flex', padding: '1.5rem', background: 'var(--card)', borderRadius: '50%', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', marginBottom: '2rem', color: 'var(--primary)' }}
-                    >
-                        {service.icon}
-                    </motion.div>
-                    <motion.h1
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '1.5rem', color: 'var(--foreground)' }}
-                    >
-                        {service.title}
-                    </motion.h1>
-                    <motion.p
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.1 }}
-                        style={{ fontSize: '1.2rem', color: 'var(--secondary-foreground)', maxWidth: '700px', margin: '0 auto', lineHeight: '1.6' }}
-                    >
-                        {service.description}
-                    </motion.p>
-                </div>
-            </section>
+            {/* Hero Section */}
+            <section className="bg-white pt-32 pb-20 relative overflow-hidden">
+                <div className="absolute top-0 right-0 -mr-20 -mt-20 h-96 w-96 rounded-full bg-blue-50/50 blur-3xl pointer-events-none" />
 
-            {/* Stats Section */}
-            <section style={{ padding: '40px 1rem', background: '#ffffff', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-                <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '4rem', flexWrap: 'wrap' }}>
-                    <div style={{ textAlign: 'center' }}>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--primary)' }}>{service.stats.patients}</p>
-                        <p style={{ color: 'var(--secondary-foreground)', fontSize: '0.9rem', fontWeight: '600', textTransform: 'uppercase' }}>Happy Patients</p>
-                    </div>
-                    <div style={{ textAlign: 'center' }}>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--primary)' }}>{service.stats.surgeries}</p>
-                        <p style={{ color: 'var(--secondary-foreground)', fontSize: '0.9rem', fontWeight: '600', textTransform: 'uppercase' }}>Successful Surgeries</p>
-                    </div>
-                    <div style={{ textAlign: 'center' }}>
-                        <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--primary)' }}>{service.stats.experience}</p>
-                        <p style={{ color: 'var(--secondary-foreground)', fontSize: '0.9rem', fontWeight: '600', textTransform: 'uppercase' }}>Experience</p>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                    <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            className="h-24 w-24 rounded-[2rem] bg-blue-50 flex items-center justify-center text-blue-600 mb-8 shadow-xl shadow-blue-100"
+                        >
+                            {service.icon}
+                        </motion.div>
+
+                        <motion.h1
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            className="text-4xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight mb-6"
+                        >
+                            {service.title}
+                        </motion.h1>
+
+                        <motion.p
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.1 }}
+                            className="text-lg lg:text-xl text-slate-500 font-medium leading-relaxed"
+                        >
+                            {service.description}
+                        </motion.p>
                     </div>
                 </div>
             </section>
 
-            {/* Details Grid */}
-            <section className={styles.section} style={{ padding: '80px 1rem' }}>
-                <div className="container" style={{ maxWidth: '1200px', margin: '0 auto' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem' }}>
-
-                        {/* Key Features */}
+            {/* Stats Bar */}
+            <div className="bg-white border-y border-slate-100 py-12">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-wrap justify-center gap-12 lg:gap-32 text-center">
                         <div>
-                            <h2 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                <Activity color="var(--primary)" /> Treatments & Procedures
+                            <p className="text-3xl font-black text-blue-600 mb-1">{service.stats.patients}</p>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Happy Patients</p>
+                        </div>
+                        <div>
+                            <p className="text-3xl font-black text-blue-600 mb-1">{service.stats.surgeries}</p>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Successful Surgeries</p>
+                        </div>
+                        <div>
+                            <p className="text-3xl font-black text-blue-600 mb-1">{service.stats.experience}</p>
+                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Years of Experience</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Main Content */}
+            <section className="py-24">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid lg:grid-cols-5 gap-16">
+                        {/* Treatments */}
+                        <div className="lg:col-span-3">
+                            <h2 className="text-3xl font-black text-slate-900 mb-8 flex items-center gap-4">
+                                <Activity className="text-blue-600" size={32} />
+                                Treatments & Procedures
                             </h2>
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                {service.features.map((feature: string, i: number) => (
+
+                            <div className="grid sm:grid-cols-1 gap-4">
+                                {service.features.map((feature, i) => (
                                     <motion.div
                                         key={i}
                                         initial={{ x: -20, opacity: 0 }}
                                         whileInView={{ x: 0, opacity: 1 }}
                                         viewport={{ once: true }}
                                         transition={{ delay: i * 0.1 }}
-                                        style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', background: 'var(--card)', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
+                                        className="group p-6 rounded-3xl bg-white border-2 border-slate-50 hover:border-blue-100 hover:shadow-xl transition-all flex items-center gap-4"
                                     >
-                                        <CheckCircle size={20} color="#16a34a" />
-                                        <span style={{ fontSize: '1.1rem', fontWeight: '500' }}>{feature}</span>
+                                        <div className="h-10 w-10 rounded-xl bg-green-50 text-green-500 flex items-center justify-center shrink-0">
+                                            <CheckCircle size={20} strokeWidth={3} />
+                                        </div>
+                                        <span className="text-lg font-bold text-slate-700">{feature}</span>
                                     </motion.div>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Doctors & Booking */}
-                        <div>
-                            <div className={styles.card} style={{ position: 'sticky', top: '100px', background: 'var(--card)', padding: '2rem' }}>
-                                <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Expert Doctors</h3>
-                                <div style={{ marginBottom: '2rem' }}>
-                                    {service.doctors.map((doc: string, i: number) => (
-                                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                                            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                <User size={20} />
+                        {/* Sidebar: Doctors & Booking */}
+                        <div className="lg:col-span-2">
+                            <div className="sticky top-32 space-y-8">
+                                <div className="p-8 rounded-[2.5rem] bg-slate-900 text-white shadow-2xl relative overflow-hidden">
+                                    <div className="absolute top-0 right-0 -mr-10 -mt-10 h-40 w-40 bg-blue-600 rounded-full blur-3xl opacity-20" />
+
+                                    <h3 className="text-2xl font-black mb-8 relative">Consulting Specialists</h3>
+                                    <div className="space-y-6 relative">
+                                        {service.doctors.map((doc, i) => (
+                                            <div key={i} className="flex items-center gap-4">
+                                                <div className="h-14 w-14 rounded-2xl bg-white/10 flex items-center justify-center text-2xl font-black text-blue-400">
+                                                    {doc.split(' ').pop()?.charAt(0)}
+                                                </div>
+                                                <div>
+                                                    <p className="font-extrabold text-lg">{doc}</p>
+                                                    <p className="text-sm font-bold text-blue-400 uppercase tracking-widest">Senior Consultant</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p style={{ fontWeight: '600' }}>{doc}</p>
-                                                <p style={{ fontSize: '0.85rem', color: 'var(--secondary-foreground)' }}>Senior Consultant</p>
+                                        ))}
+                                    </div>
+
+                                    <div className="mt-10 pt-10 border-t border-white/10 space-y-6">
+                                        <div className="flex items-center justify-between text-sm">
+                                            <div className="flex items-center gap-3 font-bold text-white/60">
+                                                <Clock size={18} className="text-blue-400" />
+                                                Mon — Fri
                                             </div>
+                                            <span className="font-black">9:00 AM — 6:00 PM</span>
                                         </div>
-                                    ))}
-                                </div>
+                                        <div className="flex items-center justify-between text-sm">
+                                            <div className="flex items-center gap-3 font-bold text-white/60">
+                                                <Calendar size={18} className="text-blue-400" />
+                                                Sat — Sun
+                                            </div>
+                                            <span className="font-black">10:00 AM — 2:00 PM</span>
+                                        </div>
 
-                                <div style={{ borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
-                                    <h4 style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        <Clock size={18} /> OPD Hours
-                                    </h4>
-                                    <p style={{ marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between' }}>
-                                        <span style={{ color: 'var(--secondary-foreground)' }}>Mon - Fri</span>
-                                        <strong>9:00 AM - 6:00 PM</strong>
-                                    </p>
-                                    <p style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between' }}>
-                                        <span style={{ color: 'var(--secondary-foreground)' }}>Sat - Sun</span>
-                                        <strong>10:00 AM - 2:00 PM</strong>
-                                    </p>
-
-                                    <Link href="/book-appointment" style={{ width: '100%', display: 'block' }}>
-                                        <button className="btn btn-primary" style={{ width: '100%', padding: '1rem', fontSize: '1.1rem' }}>
-                                            <Calendar size={20} style={{ marginRight: '0.5rem' }} /> Book Appointment
-                                        </button>
-                                    </Link>
+                                        <Link href="/book-appointment" className="block">
+                                            <button className="w-full py-4 rounded-2xl bg-blue-600 text-white font-black text-lg hover:bg-blue-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
+                                                Book Appointment
+                                                <ArrowRight size={20} />
+                                            </button>
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
