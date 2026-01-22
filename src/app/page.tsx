@@ -7,7 +7,8 @@ import {
   CheckCircle,
   ArrowRight,
   Heart,
-  Stethoscope
+  Stethoscope,
+  Calendar
 } from "lucide-react";
 import Chatbot from "@/components/Chatbot";
 import Navbar from "@/components/Navbar";
@@ -29,63 +30,52 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div className={styles.badge} style={{ fontFamily: 'var(--font-heading)', background: 'rgba(14, 165, 233, 0.1)', color: 'var(--primary)', border: '1px solid rgba(14, 165, 233, 0.2)' }}>
-              TRUSTED CARE. SIMPLIFIED.
+            <div className={styles.badge}>
+              Professional Healthcare Services
             </div>
-            <h1 className={styles.heroTitle} style={{ fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>
-              Advanced <br />
-              <span style={{ color: 'var(--primary)' }}>Healthcare.</span>
+            <h1 className={styles.heroTitle}>
+              Your Trusted Partner <br />
+              <span>in Health & Wellness</span>
             </h1>
-            <p className={styles.heroSubtitle} style={{ fontSize: '1.25rem', opacity: 0.6 }}>
-              World-class precision meets compassionate care. Experience the future of medical excellence today.
+            <p className={styles.heroSubtitle}>
+              Experience world-class healthcare with top-rated doctors and cutting-edge technology. Simple, reliable, and patient-centered.
             </p>
             <div className={styles.heroButtons}>
               <Link href="/book-appointment">
-                <button className="btn btn-primary" style={{ boxShadow: 'var(--shadow-primary)', padding: '1rem 2rem' }}>
+                <button className="btn btn-primary">
                   Book Appointment
+                  <Calendar size={18} />
+                </button>
+              </Link>
+              <Link href="#services">
+                <button className="btn btn-outline" style={{ borderColor: 'var(--primary)', color: 'var(--primary)' }}>
+                  Explore Services
                   <ArrowRight size={18} />
                 </button>
               </Link>
             </div>
-
-            {/* Floating Search Bar like Mockup */}
-            <div className={styles.searchBar}>
-              <Activity size={20} color="var(--primary)" />
-              <input
-                type="text"
-                placeholder="Find a specialist or service..."
-                className={styles.searchInput}
-              />
-            </div>
           </motion.div>
 
+          {/* Hero Illustration Placeholder - Modern Clean Look */}
           <motion.div
             className={styles.heroImageWrapper}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className={styles.heroCard}>
-              <img
-                src="/hero-image.png"
-                alt="Medical Team"
-                loading="eager"
-              />
-
-              {/* Floating Badge */}
-              <motion.div
-                className={styles.floatingBadge}
-                animate={{ y: [0, -12, 0] }}
-                transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-              >
-                <div className={styles.floatingIcon}>
-                  <Heart size={28} fill="currentColor" />
+            <div className={styles.heroCard} style={{ border: 'none', boxShadow: 'none', background: 'transparent' }}>
+              <div style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)', borderRadius: '2rem', padding: '3rem', position: 'relative' }}>
+                <img
+                  src="/hero-image.png"
+                  alt="Medical Professional"
+                  loading="eager"
+                  style={{ borderRadius: '1.5rem', boxShadow: 'var(--shadow-deep)' }}
+                />
+                <div style={{ position: 'absolute', top: '-20px', right: '-20px', padding: '1rem', background: 'white', borderRadius: '1rem', boxShadow: 'var(--shadow-soft)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <div style={{ background: '#22c55e', width: '12px', height: '12px', borderRadius: '50%' }} />
+                  <span style={{ fontWeight: '600', fontSize: '0.9rem' }}>24/7 Available</span>
                 </div>
-                <div>
-                  <p className={styles.floatingTextLabel}>Trusted by</p>
-                  <p className={styles.floatingTextValue}>10,000+ Patients</p>
-                </div>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -94,44 +84,45 @@ export default function Home() {
       {/* Services Grid */}
       <section id="services" className={styles.services}>
         <div className={styles.packagesHeader}>
-          <h2 className="section-title">Comprehensive Healthcare Services</h2>
-          <p className="section-subtitle">From routine checkups to specialized treatments, we provide complete medical care</p>
+          <h2 className="section-title">Comprehensive Healthcare</h2>
+          <p className="section-subtitle" style={{ fontSize: '1.1rem', color: '#64748b', textAlign: 'center', marginBottom: '4rem' }}>
+            We provide a wide range of medical services to ensure your family&apos;s health and safety.
+          </p>
         </div>
 
         <div className={styles.servicesGrid}>
           {[
             {
               icon: <Activity size={32} />,
-              title: "Emergency & Critical Care",
-              desc: "24/7 emergency services with state-of-the-art facilities and expert medical teams.",
+              title: "Emergency Care",
+              desc: "Immediate medical attention for critical situations available round the clock.",
               link: "/services/emergency"
             },
             {
               icon: <Stethoscope size={32} />,
-              title: "Specialized Treatments",
-              desc: "Advanced medical specialties including cardiology, neurology, and more.",
+              title: "Specialized Doctors",
+              desc: "Consult with our expert specialists across various medical disciplines.",
               link: "/services/specialized"
             },
             {
               icon: <Heart size={32} />,
-              title: "Preventive Care",
-              desc: "Comprehensive health checkups and preventive medicine for long-term wellness.",
+              title: "Routine Checkups",
+              desc: "Preventive health screenings and routine examinations for all ages.",
               link: "/services/preventive"
             }
           ].map((service, i) => (
             <Link key={i} href={service.link} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
               <motion.div
-                className={`${styles.serviceCard} glass`}
-                whileHover={{ y: -12, scale: 1.02 }}
-                style={{ borderRadius: '2rem', padding: '3rem' }}
+                className={styles.serviceCard}
+                whileHover={{ y: -10 }}
               >
-                <div className={styles.iconBox} style={{ background: 'linear-gradient(135deg, var(--primary), var(--secondary))', color: 'white' }}>
+                <div className={styles.iconBox} style={{ background: '#eff6ff', color: 'var(--primary)', marginBottom: '1.5rem' }}>
                   {service.icon}
                 </div>
-                <h3 className={styles.serviceTitle} style={{ fontFamily: 'var(--font-heading)', fontSize: '1.75rem' }}>{service.title}</h3>
-                <p className={styles.serviceDesc} style={{ fontSize: '1rem', lineHeight: '1.6' }}>{service.desc}</p>
-                <div className={styles.serviceLink} style={{ color: 'var(--primary)', fontWeight: '700' }}>
-                  Explore Details <ArrowRight size={18} />
+                <h3 className={styles.serviceTitle} style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem' }}>{service.title}</h3>
+                <p className={styles.serviceDesc} style={{ fontSize: '1rem', color: '#64748b', marginBottom: '2rem' }}>{service.desc}</p>
+                <div className={styles.serviceLink} style={{ color: 'var(--primary)', fontWeight: '600' }}>
+                  View Details <ArrowRight size={18} />
                 </div>
               </motion.div>
             </Link>

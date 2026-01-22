@@ -1,0 +1,57 @@
+.dashboardGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.profileCard {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-soft);
+}
+
+.vitalCard {
+    padding: 1.5rem;
+    border-radius: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.vitalCard:hover {
+    transform: translateY(-5px);
+}
+
+.appointmentItem {
+    display: flex;
+    align-items: center;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    gap: 1.25rem;
+    background: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.appointmentItem:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-soft);
+}
+
+.statusBadge {
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.statusConfirmed {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+.statusPending {
+    background: #fff7ed;
+    color: #ea580c;
+}

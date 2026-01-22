@@ -1,29 +1,26 @@
 :root {
-  --background: #ffffff;
-  --foreground: #020617;
-  --primary: #0EA5E9;
-  /* Modern Sky Blue */
-  --primary-foreground: #ffffff;
+  --background: #FFFFFF;
+  --foreground: #0F172A;
+  --primary: #2563EB;
+  --primary-foreground: #FFFFFF;
   --secondary: #F8FAFC;
-  --secondary-foreground: #475569;
-  --accent: #14B8A6;
-  /* Modern Teal */
-  --accent-foreground: #ffffff;
-  --card: #FFFFFF;
-  --card-foreground: #020617;
-  --border: #F1F5F9;
-  --input: #F1F5F9;
-  --ring: #0EA5E9;
-  --radius: 1.25rem;
+  --secondary-foreground: #64748B;
+  --accent: #06B6D4;
+  --accent-foreground: #FFFFFF;
+  --card: #F8FAFC;
+  --card-foreground: #0F172A;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #2563EB;
+  --radius: 16px;
 
   /* Fonts */
-  --font-heading: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --font-heading: 'Inter', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
 
   /* Shadows */
-  --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.04);
-  --shadow-deep: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
-  --shadow-primary: 0 10px 20px -5px rgba(14, 165, 233, 0.3);
+  --shadow-soft: 0 10px 25px rgba(0, 0, 0, 0.06);
+  --shadow-deep: 0 20px 50px rgba(0, 0, 0, 0.1);
 }
 
 /* Dark mode removed to enforce pure white healthcare aesthetic per user request */

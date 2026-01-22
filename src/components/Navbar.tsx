@@ -25,7 +25,7 @@ export default function Navbar() {
     ];
 
     return (
-        <header className={`${styles.navbar} ${scrolled ? styles.scrolled : ""} glass`}>
+        <header className={`${styles.navbar} ${scrolled ? styles.scrolled : ""}`}>
             <div className={styles.container}>
                 {/* Left: Logo */}
                 <Link href="/" className={styles.logo}>
