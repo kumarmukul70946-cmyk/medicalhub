@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
     ShieldCheck,
@@ -24,7 +24,7 @@ declare global {
     }
 }
 
-export default function PaymentPage() {
+function PaymentContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [processing, setProcessing] = useState(false);
@@ -295,5 +295,17 @@ export default function PaymentPage() {
 
             <Footer />
         </main>
+    );
+}
+
+export default function PaymentPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+                <Loader2 className="animate-spin text-blue-600" size={48} />
+            </div>
+        }>
+            <PaymentContent />
+        </Suspense>
     );
 }
