@@ -1,16 +1,16 @@
 :root {
-  --background: #F9FBFF;
+  --background: #ffffff;
   --foreground: #0f172a;
   --primary: #2563EB;
   --primary-foreground: #ffffff;
-  --secondary: #E6EEF8;
+  --secondary: #f8faff;
   --secondary-foreground: #0f172a;
   --accent: #06B6D4;
   --accent-foreground: #ffffff;
   --card: #FFFFFF;
   --card-foreground: #0f172a;
-  --border: #E6EEF8;
-  --input: #E6EEF8;
+  --border: #f1f5f9;
+  --input: #f1f5f9;
   --ring: #2563EB;
   --radius: 1rem;
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -20,23 +20,7 @@
   --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0B0F1A;
-    --foreground: #f8fafc;
-    --primary: #3B82F6;
-    --primary-foreground: #ffffff;
-    --secondary: #1E293B;
-    --secondary-foreground: #f8fafc;
-    --accent: #22D3EE;
-    --accent-foreground: #0f172a;
-    --card: #161B22;
-    --card-foreground: #f8fafc;
-    --border: #2D333B;
-    --input: #2D333B;
-    --ring: #3B82F6;
-  }
-}
+/* Dark mode removed to enforce pure white healthcare aesthetic per user request */
 
 * {
   box-sizing: border-box;
@@ -160,4 +144,31 @@ button {
   box-shadow: var(--shadow-lg);
   transform: translateY(-8px);
   border-color: var(--primary);
+}
+
+/* === GLOBAL WHITE BACKGROUND OVERRIDE === */
+
+html,
+body,
+#__next,
+main {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+/* Ensure all structural elements are white */
+header,
+footer,
+section,
+nav,
+div {
+  background-color: #ffffff !important;
+}
+
+/* Optional: force white on common panels/cards */
+.container,
+.card,
+.hero,
+.banner {
+  background-color: #ffffff !important;
 }

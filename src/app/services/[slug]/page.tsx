@@ -11,7 +11,6 @@ import {
     User,
     Stethoscope,
     CheckCircle,
-    ArrowRight,
     Clock,
     Calendar
 } from "lucide-react";
@@ -19,8 +18,21 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 
+interface Service {
+    title: string;
+    icon: React.ReactNode;
+    description: string;
+    features: string[];
+    doctors: string[];
+    stats: {
+        patients: string;
+        surgeries: string;
+        experience: string;
+    };
+}
+
 // Mock Database of Services
-const servicesData: any = {
+const servicesData: Record<string, Service> = {
     "cardiology": {
         title: "Cardiology & Cardiac Surgery",
         icon: <Heart size={48} className="text-red-500" />,
@@ -162,7 +174,7 @@ export default function ServiceDetail() {
             <Navbar />
 
             {/* Hero Section for Service */}
-            <section className={styles.hero} style={{ padding: '140px 1rem 80px', background: 'linear-gradient(to bottom, var(--secondary), var(--background))' }}>
+            <section className={styles.hero} style={{ padding: '140px 1rem 80px', background: '#ffffff' }}>
                 <div className="container" style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
                     <motion.div
                         initial={{ scale: 0.5, opacity: 0 }}
@@ -190,7 +202,7 @@ export default function ServiceDetail() {
             </section>
 
             {/* Stats Section */}
-            <section style={{ padding: '40px 1rem', background: 'rgba(14, 165, 233, 0.05)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+            <section style={{ padding: '40px 1rem', background: '#ffffff', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
                 <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '4rem', flexWrap: 'wrap' }}>
                     <div style={{ textAlign: 'center' }}>
                         <p style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--primary)' }}>{service.stats.patients}</p>

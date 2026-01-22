@@ -1,0 +1,159 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #f1f5f9;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.025em;
+}
+
+.menu {
+    display: none;
+    align-items: center;
+    gap: 2.5rem;
+}
+
+/* Desktop Menu Links */
+.menuLink {
+    color: #475569;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+    padding: 0.5rem 0;
+}
+
+.menuLink:hover {
+    color: var(--primary);
+}
+
+.menuLink::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary);
+    transition: width 0.3s ease;
+    border-radius: 10px;
+}
+
+.menuLink:hover::after {
+    width: 100%;
+}
+
+.actions {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+}
+
+.loginBtn {
+    padding: 0.625rem 1.25rem !important;
+    font-size: 0.9rem !important;
+}
+
+.bookBtn {
+    padding: 0.625rem 1.25rem !important;
+    font-size: 0.9rem !important;
+}
+
+/* Mobile Menu Button */
+.mobileMenuBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    color: #1e293b;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.mobileMenuBtn:hover {
+    color: var(--primary);
+}
+
+/* Mobile Menu Overlay */
+.mobileMenu {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 999;
+}
+
+.mobileMenuLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mobileNavLink {
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+    padding: 0.5rem 0;
+}
+
+.mobileActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+@media (min-width: 1024px) {
+
+    .menu,
+    .actions {
+        display: flex;
+    }
+
+    .mobileMenuBtn {
+        display: none;
+    }
+}

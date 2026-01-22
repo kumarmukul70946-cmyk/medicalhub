@@ -1,140 +1,44 @@
 .main {
   min-height: 100vh;
+  padding-top: 80px;
+  /* Space for sticky navbar */
 }
 
-/* Nav */
-/* Nav */
-/* Nav */
-.nav {
-  position: fixed;
-  top: 1.25rem;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95%;
-  max-width: 1200px;
-  background: rgba(255, 255, 255, 0.7);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  backdrop-filter: blur(16px) saturate(180%);
-  z-index: 1000;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 999px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@media (prefers-color-scheme: dark) {
-  .nav {
-    background: rgba(15, 23, 42, 0.6);
-    border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  }
-}
-
-.navContainer {
-  width: 100%;
-  height: 60px;
-  padding: 0 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--primary);
-  letter-spacing: -0.02em;
-}
-
-.navLinks {
-  display: none;
-  gap: 2.25rem;
-}
-
-.navLink {
-  color: var(--secondary-foreground);
-  font-weight: 600;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
-  position: relative;
-  opacity: 0.8;
-}
-
-.navLink:hover {
-  color: var(--primary);
-  opacity: 1;
-}
-
-.navLink::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--primary);
-  transition: width 0.3s ease;
-  border-radius: 2px;
-}
-
-.navLink:hover::after {
-  width: 100%;
-}
-
-.navActions {
-  display: none;
-  gap: 0.75rem;
-  align-items: center;
-}
-
-.mobileMenuBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-  color: var(--foreground);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.mobileMenu {
-  background: var(--card);
-  color: var(--card-foreground);
-  border-top: 1px solid var(--border);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-lg);
-  border-radius: 2rem;
-  margin-top: 1rem;
-}
-
-@media (min-width: 768px) {
-  .navContainer {
-    height: 72px;
-    padding: 0 1.5rem;
-  }
-
-  .navLinks,
-  .navActions {
-    display: flex;
-  }
-
-  .mobileMenuBtn {
-    display: none;
-  }
-}
+/* Old Nav Styles Removed */
 
 /* Hero */
 .hero {
   padding: 160px 1rem 100px;
-  background: var(--background);
-  background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 40%),
-    radial-gradient(circle at bottom left, rgba(6, 182, 212, 0.08), transparent 40%);
+  background-color: #ffffff;
   position: relative;
   overflow: hidden;
+  transition: background 0.5s ease;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent;
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
+  animation: backgroundPulse 15s infinite alternate ease-in-out;
+}
+
+@keyframes backgroundPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 }
 
 .heroContent {
@@ -379,8 +283,8 @@
 
 /* Emergency */
 .emergency {
-  background: #0f172a;
-  color: white;
+  background: #ffffff;
+  color: #000000;
   padding: 100px 1.5rem;
   position: relative;
   overflow: hidden;
@@ -394,17 +298,14 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/emergency-bg.png');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.1;
+  background-image: none;
   z-index: 0;
 }
 
 .emergencyBadge {
   display: inline-block;
   padding: 0.5rem 1.25rem;
-  background: rgba(239, 68, 68, 0.15);
+  background: rgba(239, 68, 68, 0.1);
   color: #f87171;
   border-radius: 999px;
   font-size: 0.85rem;
@@ -482,7 +383,7 @@
 
 .emergencyServices {
   flex: 1;
-  background: rgba(255, 255, 255, 0.03);
+  background: #ffffff;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -500,12 +401,12 @@
   font-size: 1.75rem;
   font-weight: 800;
   margin-bottom: 2rem;
-  color: white;
+  color: #000000;
 }
 
 .miniCard {
   padding: 1.25rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
   display: flex;
@@ -577,7 +478,7 @@
 
 .packagePopular {
   border: 2px solid var(--primary);
-  background: linear-gradient(to bottom right, var(--card), rgba(37, 99, 235, 0.02));
+  background: #ffffff;
 }
 
 .packageCard:hover {
@@ -646,8 +547,8 @@
 
 /* Footer */
 .footer {
-  background: #020617;
-  color: #94a3b8;
+  background: #ffffff;
+  color: #000000;
   padding: 60px 1rem 30px;
 }
 
@@ -660,7 +561,7 @@
 }
 
 .footerCol h4 {
-  color: white;
+  color: #000000;
   margin-bottom: 1.25rem;
 }
 

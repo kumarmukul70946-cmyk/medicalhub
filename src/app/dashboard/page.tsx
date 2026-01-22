@@ -85,7 +85,7 @@ export default function Dashboard() {
                                     className={styles.card}
                                 >
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem' }}>
-                                        <div style={{ width: '90px', height: '90px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary), var(--accent))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', boxShadow: '0 4px 12px rgba(14, 165, 233, 0.25)' }}>
+                                        <div style={{ width: '90px', height: '90px', borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', boxShadow: '0 4px 12px rgba(14, 165, 233, 0.25)' }}>
                                             <User size={48} />
                                         </div>
                                         <div>
