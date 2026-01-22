@@ -20,6 +20,9 @@ import {
 import Link from "next/link";
 import { motion } from "framer-motion";
 import React, { Suspense } from "react";
+import PrescriptionList from "@/components/PrescriptionList";
+import VideoCallList from "@/components/VideoCallList";
+import { Video } from "lucide-react";
 
 function DashboardContent() {
 
@@ -37,10 +40,6 @@ function DashboardContent() {
         { doctor: "Dr. Michael Chen", dept: "Neurology", date: "Feb 02, 2026", time: "02:30 PM", status: "Pending", type: "Follow-up" }
     ];
 
-    const records = [
-        { title: "Blood Test Results", date: "Jan 10, 2026", type: "PDF", size: "1.2 MB" },
-        { title: "X-Ray Report", date: "Dec 15, 2025", type: "JPEG", size: "4.5 MB" }
-    ];
 
     return (
         <main className="bg-slate-50 min-h-screen selection:bg-blue-100">
@@ -212,29 +211,26 @@ function DashboardContent() {
                                 <div className="bg-white rounded-[2.5rem] border-2 border-slate-100 p-8 shadow-sm">
                                     <div className="flex items-center justify-between mb-8">
                                         <h3 className="text-xl font-black text-slate-900 flex items-center gap-3">
-                                            <FileText className="text-indigo-600" size={24} /> Lab Reports
+                                            <FileText className="text-indigo-600" size={24} /> Digital Prescriptions
                                         </h3>
                                         <button className="text-blue-600 font-black text-xs uppercase tracking-widest hover:underline">View All</button>
                                     </div>
-                                    <div className="space-y-4">
-                                        {records.map((rec, i) => (
-                                            <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all cursor-pointer">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-indigo-500 shadow-sm font-black text-[10px] uppercase">
-                                                        {rec.type}
-                                                    </div>
-                                                    <div>
-                                                        <p className="font-black text-slate-800 text-sm">{rec.title}</p>
-                                                        <p className="text-[10px] font-bold text-slate-400 tracking-wider">RECEIVED {rec.date.toUpperCase()}</p>
-                                                    </div>
-                                                </div>
-                                                <ArrowRight className="text-slate-300" size={16} />
-                                            </div>
-                                        ))}
-                                    </div>
+                                    <PrescriptionList email={patient.email} />
                                 </div>
 
-                                <div className="bg-blue-600 rounded-[2.5rem] p-8 text-white relative overflow-hidden group">
+                                <div className="bg-white rounded-[2.5rem] border-2 border-slate-100 p-8 shadow-sm">
+                                    <div className="flex items-center justify-between mb-8">
+                                        <h3 className="text-xl font-black text-slate-900 flex items-center gap-3">
+                                            <Video className="text-rose-600" size={24} /> Video Consultations
+                                        </h3>
+                                        <div className="h-8 w-8 rounded-xl bg-rose-50 flex items-center justify-center text-rose-600 animate-pulse">
+                                            <div className="h-2 w-2 rounded-full bg-rose-600" />
+                                        </div>
+                                    </div>
+                                    <VideoCallList email={patient.email} />
+                                </div>
+
+                                <div className="bg-blue-600 rounded-[2.5rem] p-8 text-white relative overflow-hidden group md:col-span-2">
                                     <div className="absolute top-0 right-0 h-40 w-40 bg-white/10 rounded-full blur-3xl -mr-10 -mt-10" />
                                     <h3 className="text-xl font-black mb-6 flex items-center gap-3 relative z-10">
                                         <ShieldCheck size={24} /> Health Shield™

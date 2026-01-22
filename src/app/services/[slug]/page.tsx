@@ -8,11 +8,13 @@ import {
     Brain,
     Bone,
     User,
-    Stethoscope,
-    CheckCircle,
-    Clock,
     Calendar,
-    ArrowRight
+    ArrowRight,
+    Pill,
+    FlaskConical,
+    FileText,
+    CheckCircle,
+    Clock
 } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -141,9 +143,81 @@ const servicesData: Record<string, Service> = {
             experience: "15+ Years"
         }
     },
+    "pharmacy": {
+        title: "24/7 Digital Pharmacy",
+        icon: <Pill size={48} className="text-pink-500" />,
+        description: "Get genuine medicines delivered to your doorstep in minutes. Our digital pharmacy ensures you never miss a dose with easy uploads and automated refills.",
+        features: [
+            "2-Hour Home Delivery",
+            "100% Genuine Medicines",
+            "Automated Refill Reminders",
+            "Prescription Vault",
+            "Deep Discounts on Monthly Orders"
+        ],
+        doctors: ["Dr. Mark White", "Pharmacist Ravi"],
+        stats: {
+            patients: "200k+",
+            surgeries: "N/A",
+            experience: "Verified Quality"
+        }
+    },
+    "lab-tests": {
+        title: "Diagnostic Lab Services",
+        icon: <FlaskConical size={48} className="text-purple-500" />,
+        description: "Accurate diagnostics from the comfort of your home. We provide a full range of tests with digital reports delivered directly to your profile.",
+        features: [
+            "Home Sample Collection",
+            "NABL Accredited Labs",
+            "Next-Day Digital Reports",
+            "Blood, Urine & DNA Tests",
+            "Radiology & Imaging Support"
+        ],
+        doctors: ["Dr. Sarah Johnson", "Lab Specialist Anita"],
+        stats: {
+            patients: "80k+",
+            surgeries: "N/A",
+            experience: "Precision Driven"
+        }
+    },
+    "health-wallet": {
+        title: "Digital Health Wallet",
+        icon: <FileText size={48} className="text-cyan-500" />,
+        description: "Your entire medical life in one secure place. No more carrying files; access your records, prescriptions, and billing history anytime, anywhere.",
+        features: [
+            "Encrypted Record Storage",
+            "Family Profile Management",
+            "Quick Sharing with Doctors",
+            "Billing & Claims Tracking",
+            "Universal Health ID Integration"
+        ],
+        doctors: ["Support Team", "Data Privacy Officer"],
+        stats: {
+            patients: "120k+",
+            surgeries: "N/A",
+            experience: "Level 4 Security"
+        }
+    },
+    "follow-ups": {
+        title: "Smart Recovery & Follow-ups",
+        icon: <Calendar size={48} className="text-teal-500" />,
+        description: "Healthcare doesn't end with a visit. Our smart system tracks your recovery and ensures you follow your post-consultation plan perfectly.",
+        features: [
+            "Automated Checkup Reminders",
+            "Recovery Milestone Tracking",
+            "Direct Chat with Assistants",
+            "Vitals Monitoring Alerts",
+            "Personalized Health Tips"
+        ],
+        doctors: ["Dr. Roberts", "Care Manager Neha"],
+        stats: {
+            patients: "45k+",
+            surgeries: "N/A",
+            experience: "Outcome Focused"
+        }
+    },
     "specialized": {
         title: "Specialized Medical Treatments",
-        icon: <Stethoscope size={48} className="text-blue-600" />,
+        icon: <Activity size={48} className="text-blue-600" />,
         description: "We offer advanced medical treatments across various specialties. From non-invasive procedures to complex surgeries, our expert teams ensure world-class care.",
         features: [
             "Cardiology & Cardiac Surgery",

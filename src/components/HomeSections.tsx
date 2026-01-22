@@ -171,9 +171,10 @@ export default function HomeSections() {
 
                     <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         {serviceItems.map((item, idx) => (
-                            <div
+                            <Link
+                                href={`/services/${item.slug}`}
                                 key={idx}
-                                className="group rounded-[2rem] bg-white border border-slate-100 p-8 shadow-sm hover:shadow-2xl hover:border-blue-100 hover:-translate-y-2 transition-all cursor-default"
+                                className="group rounded-[2rem] bg-white border border-slate-100 p-8 shadow-sm hover:shadow-2xl hover:border-blue-100 hover:-translate-y-2 transition-all cursor-pointer block"
                             >
                                 <div className="h-16 w-16 rounded-[1.25rem] bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:bg-blue-600 group-hover:border-blue-600 transition-all duration-300">
                                     <div className="text-blue-600 group-hover:text-white transition-colors duration-300">
@@ -195,7 +196,7 @@ export default function HomeSections() {
                                         <ArrowRight size={16} />
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 </div>
@@ -206,31 +207,37 @@ export default function HomeSections() {
 
 const serviceItems = [
     {
+        slug: "specialized",
         icon: <Stethoscope size={30} />,
         title: "Specialist Care",
         desc: "Direct access to top specialists across cardiology, neurology, and 40+ medical fields.",
     },
     {
+        slug: "pharmacy",
         icon: <Pill size={30} />,
         title: "Home Pharmacy",
         desc: "Verified prescription medicines delivered within 2 hours to your doorstep with real-time tracking.",
     },
     {
+        slug: "lab-tests",
         icon: <FlaskConical size={30} />,
         title: "Instant Lab Tests",
         desc: "Sample collection from your home. Get digital reports synced directly to your health records.",
     },
     {
+        slug: "health-wallet",
         icon: <FileText size={30} />,
         title: "Health Wallet",
         desc: "A secure digital vault for all your family's prescriptions and medical history.",
     },
     {
+        slug: "emergency",
         icon: <Activity size={30} />,
         title: "Emergency Care",
         desc: "One-tap emergency ambulance support and 24/7 critical medical guidance.",
     },
     {
+        slug: "follow-ups",
         icon: <Calendar size={30} />,
         title: "Smart Follow-ups",
         desc: "Automated reminders for your checkups and smart health goal tracking.",

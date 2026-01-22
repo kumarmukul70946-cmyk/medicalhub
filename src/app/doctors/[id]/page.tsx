@@ -3,29 +3,43 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
-    User,
     Activity,
-    Clock,
     ShieldCheck,
     Mail,
-    Phone,
     MapPin,
     Award,
+    Clock,
     CheckCircle2,
     Calendar,
     ArrowLeft,
     Star,
-    Sparkles
+    Sparkles,
+    Loader2
 } from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import RatingSystem from "@/components/RatingSystem";
+import { useState } from "react";
+import { Video } from "lucide-react";
+
+interface DoctorData {
+    name: string;
+    specialty: string;
+    exp: string;
+    availability: string;
+    education: string;
+    languages: string;
+    rating: number;
+    reviews: number;
+    about: string;
+}
 
 // Mock Data
-const doctorsData: any = {
+const doctorsData: Record<string, DoctorData> = {
     "dr-sarah-johnson": {
         name: "Dr. Sarah Johnson",
-        specialty: "Senior Cardiologist",
+        specialty: "Senior Cardiology",
         exp: "15+ Years Experience",
         availability: "Mon - Fri",
         education: "MD - Cardiology, Johns Hopkins University",
@@ -36,7 +50,7 @@ const doctorsData: any = {
     },
     "dr-michael-chen": {
         name: "Dr. Michael Chen",
-        specialty: "Neurologist",
+        specialty: "Neurology",
         exp: "12+ Years Experience",
         availability: "Tue - Sat",
         education: "DM - Neurology, Harvard Medical School",
@@ -47,7 +61,7 @@ const doctorsData: any = {
     },
     "dr-emily-davis": {
         name: "Dr. Emily Davis",
-        specialty: "Pediatrician",
+        specialty: "Pediatrics",
         exp: "10+ Years Experience",
         availability: "Mon - Sat",
         education: "MD - Pediatrics, University of Pennsylvania",
@@ -60,9 +74,38 @@ const doctorsData: any = {
 
 export default function DoctorProfile() {
     const params = useParams();
+    const router = useRouter();
     const slug = (Array.isArray(params?.id) ? params.id[0] : params?.id) || "";
     const doctorKey = slug || "dr-sarah-johnson";
     const doctor = doctorsData[doctorKey] || doctorsData["dr-sarah-johnson"];
+
+    const [startingCall, setStartingCall] = useState(false);
+
+    const startTelemedicine = async () => {
+        setStartingCall(true);
+        try {
+            const res = await fetch("/api/telesessions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    doctorId: "65af3f8e5627250012345678", // Placeholder DB ID
+                    doctorName: doctor.name,
+                    patientName: "Mukul Anand",
+                    patientEmail: "mukul@gmail.com",
+                    startTime: new Date(),
+                    status: 'active'
+                })
+            });
+            if (res.ok) {
+                const session = await res.json();
+                router.push(`/telemedicine/${session.meetingId}`);
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setStartingCall(false);
+        }
+    };
 
     return (
         <main className="bg-slate-50 min-h-screen selection:bg-blue-100">
@@ -120,11 +163,19 @@ export default function DoctorProfile() {
 
                                 <div className="mt-8">
                                     <Link href="/book-appointment">
-                                        <button className="w-full py-5 rounded-[2rem] bg-slate-900 text-white font-black text-lg hover:bg-blue-600 transition-all flex items-center justify-center gap-3 shadow-xl">
+                                        <button className="w-full py-5 rounded-[2rem] bg-slate-900 text-white font-black text-lg hover:bg-slate-800 transition-all flex items-center justify-center gap-3 shadow-xl mb-4">
                                             Book Visit
                                             <Calendar size={20} />
                                         </button>
                                     </Link>
+                                    <button
+                                        onClick={startTelemedicine}
+                                        disabled={startingCall}
+                                        className="w-full py-5 rounded-[2rem] bg-rose-600 text-white font-black text-lg hover:bg-rose-700 transition-all flex items-center justify-center gap-3 shadow-xl shadow-rose-100 disabled:opacity-50"
+                                    >
+                                        {startingCall ? <Loader2 className="animate-spin" size={20} /> : <Video size={20} />}
+                                        Consult Now
+                                    </button>
                                 </div>
                             </motion.div>
                         </div>
@@ -209,6 +260,11 @@ export default function DoctorProfile() {
                                 <button className="px-8 py-4 bg-white text-slate-900 rounded-2xl font-black whitespace-nowrap hover:bg-blue-50 transition-all hover:scale-105">
                                     View License
                                 </button>
+                            </div>
+
+                            {/* Ratings Section */}
+                            <div className="pt-10">
+                                <RatingSystem doctorId={slug} />
                             </div>
                         </div>
                     </div>
