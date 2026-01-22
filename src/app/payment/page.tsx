@@ -55,7 +55,17 @@ function PaymentContent() {
 
             if (order.error) throw new Error(order.error);
 
-            // 2. Open Razorpay Checkout Modal
+            // 2. Handle Demo Mode Fallback
+            if (order.demo) {
+                console.warn("Running in Demo Mode. Simulating Razorpay Modal...");
+                setTimeout(() => {
+                    setSuccess(true);
+                    setTimeout(() => router.push('/dashboard'), 3000);
+                }, 1500);
+                return;
+            }
+
+            // 3. Open Razorpay Checkout Modal
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_placeholder",
                 amount: order.amount,
@@ -195,18 +205,29 @@ function PaymentContent() {
                                     onClick={handleRazorpayPayment}
                                     disabled={processing || !scriptLoaded}
                                     className="btn btn-primary"
-                                    style={{ width: '100%', padding: '1.25rem', fontSize: '1.125rem', borderRadius: '16px' }}
+                                    style={{
+                                        width: '100%',
+                                        padding: '1.25rem',
+                                        fontSize: '1.125rem',
+                                        borderRadius: '16px',
+                                        color: '#FFFFFF',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '0.75rem',
+                                        border: 'none'
+                                    }}
                                 >
                                     {processing ? (
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                            <Loader2 className="animate-spin" size={20} />
-                                            Initializing Secure Payment...
-                                        </div>
+                                        <>
+                                            <Loader2 className="animate-spin" size={22} />
+                                            Initializing...
+                                        </>
                                     ) : (
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                        <>
                                             Pay ₹{totalPrice} Now
-                                            <ArrowRight size={20} />
-                                        </div>
+                                            <ArrowRight size={22} />
+                                        </>
                                     )}
                                 </button>
 
