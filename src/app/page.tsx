@@ -29,28 +29,33 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <div className={styles.badge}>
-              <CheckCircle size={14} className={styles.badgeIcon} /> World-Class Healthcare
+            <div className={styles.badge} style={{ fontFamily: 'var(--font-heading)', background: 'rgba(14, 165, 233, 0.1)', color: 'var(--primary)', border: '1px solid rgba(14, 165, 233, 0.2)' }}>
+              TRUSTED CARE. SIMPLIFIED.
             </div>
-            <h1 className={styles.heroTitle}>
-              Our Medical <br />
-              <span>Services</span>
+            <h1 className={styles.heroTitle} style={{ fontFamily: 'var(--font-heading)', textTransform: 'uppercase' }}>
+              Advanced <br />
+              <span style={{ color: 'var(--primary)' }}>Healthcare.</span>
             </h1>
-            <p className={styles.heroSubtitle}>
-              Comprehensive healthcare solutions designed to meet all your medical needs with excellence and compassion.
+            <p className={styles.heroSubtitle} style={{ fontSize: '1.25rem', opacity: 0.6 }}>
+              World-class precision meets compassionate care. Experience the future of medical excellence today.
             </p>
             <div className={styles.heroButtons}>
               <Link href="/book-appointment">
-                <button className="btn btn-primary">
+                <button className="btn btn-primary" style={{ boxShadow: 'var(--shadow-primary)', padding: '1rem 2rem' }}>
                   Book Appointment
                   <ArrowRight size={18} />
                 </button>
               </Link>
-              <Link href="#services">
-                <button className="btn btn-outline">
-                  Our Services
-                </button>
-              </Link>
+            </div>
+
+            {/* Floating Search Bar like Mockup */}
+            <div className={styles.searchBar}>
+              <Activity size={20} color="var(--primary)" />
+              <input
+                type="text"
+                placeholder="Find a specialist or service..."
+                className={styles.searchInput}
+              />
             </div>
           </motion.div>
 
@@ -116,16 +121,17 @@ export default function Home() {
           ].map((service, i) => (
             <Link key={i} href={service.link} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
               <motion.div
-                className={styles.serviceCard}
-                whileHover={{ y: -5 }}
+                className={`${styles.serviceCard} glass`}
+                whileHover={{ y: -12, scale: 1.02 }}
+                style={{ borderRadius: '2rem', padding: '3rem' }}
               >
-                <div className={styles.iconBox}>
+                <div className={styles.iconBox} style={{ background: 'linear-gradient(135deg, var(--primary), var(--secondary))', color: 'white' }}>
                   {service.icon}
                 </div>
-                <h3 className={styles.serviceTitle}>{service.title}</h3>
-                <p className={styles.serviceDesc}>{service.desc}</p>
-                <div className={styles.serviceLink}>
-                  Learn More <ArrowRight size={16} />
+                <h3 className={styles.serviceTitle} style={{ fontFamily: 'var(--font-heading)', fontSize: '1.75rem' }}>{service.title}</h3>
+                <p className={styles.serviceDesc} style={{ fontSize: '1rem', lineHeight: '1.6' }}>{service.desc}</p>
+                <div className={styles.serviceLink} style={{ color: 'var(--primary)', fontWeight: '700' }}>
+                  Explore Details <ArrowRight size={18} />
                 </div>
               </motion.div>
             </Link>

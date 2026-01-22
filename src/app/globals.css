@@ -1,23 +1,29 @@
 :root {
   --background: #ffffff;
-  --foreground: #0f172a;
-  --primary: #2563EB;
+  --foreground: #020617;
+  --primary: #0EA5E9;
+  /* Modern Sky Blue */
   --primary-foreground: #ffffff;
-  --secondary: #f8faff;
-  --secondary-foreground: #0f172a;
-  --accent: #06B6D4;
+  --secondary: #F8FAFC;
+  --secondary-foreground: #475569;
+  --accent: #14B8A6;
+  /* Modern Teal */
   --accent-foreground: #ffffff;
   --card: #FFFFFF;
-  --card-foreground: #0f172a;
-  --border: #f1f5f9;
-  --input: #f1f5f9;
-  --ring: #2563EB;
-  --radius: 1rem;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --card-foreground: #020617;
+  --border: #F1F5F9;
+  --input: #F1F5F9;
+  --ring: #0EA5E9;
+  --radius: 1.25rem;
+
+  /* Fonts */
+  --font-heading: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Shadows */
+  --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.04);
+  --shadow-deep: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+  --shadow-primary: 0 10px 20px -5px rgba(14, 165, 233, 0.3);
 }
 
 /* Dark mode removed to enforce pure white healthcare aesthetic per user request */
@@ -105,29 +111,21 @@ button {
   padding: 6rem 0;
 }
 
+.glass {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
 .section-title {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-family: var(--font-heading);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
   font-weight: 800;
   text-align: center;
   margin-bottom: 1.25rem;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
   color: var(--foreground);
-}
-
-.section-subtitle {
-  text-align: center;
-  color: var(--secondary-foreground);
-  opacity: 0.8;
-  max-width: 700px;
-  margin: 0 auto 4rem;
-  font-size: 1.125rem;
-  line-height: 1.6;
-}
-
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2.5rem;
 }
 
 .card {
@@ -135,14 +133,14 @@ button {
   color: var(--card-foreground);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 2rem;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow);
+  padding: 2.5rem;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-soft);
 }
 
 .card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-8px);
+  box-shadow: var(--shadow-deep);
+  transform: translateY(-10px);
   border-color: var(--primary);
 }
 
