@@ -1,12 +1,25 @@
 "use client";
 
-import { useState, Suspense, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import {
+    ShieldCheck,
+    CreditCard,
+    ArrowLeft,
+    CheckCircle2,
+    Info,
+    Lock,
+    Stethoscope,
+    Calendar,
+    Clock,
+    User,
+    Loader2,
+    CheckCircle
+} from "lucide-react";
+import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import styles from "@/app/page.module.css";
-import { Lock, CheckCircle, ShieldCheck, ArrowRight, Loader2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 declare global {
     interface Window {
@@ -14,18 +27,23 @@ declare global {
     }
 }
 
-function PaymentContent() {
+export default function PaymentPage() {
     const searchParams = useSearchParams();
     const router = useRouter();
-
-    const planName = searchParams.get('plan') || 'General Consultation';
-    const planPrice = searchParams.get('price') || '500';
-    const numericPrice = parseInt(planPrice.replace(/[^0-9]/g, '')) || 500;
-    const totalPrice = Math.round(numericPrice * 1.18); // Including GST
-
     const [processing, setProcessing] = useState(false);
-    const [success, setSuccess] = useState(false);
     const [scriptLoaded, setScriptLoaded] = useState(false);
+    const [success, setSuccess] = useState(false);
+
+    const planName = searchParams.get("plan") || "General Consultation";
+    const priceText = searchParams.get("price") || "₹499";
+    const rawPrice = parseInt(priceText.replace(/[^\d]/g, ""));
+
+    const GST_RATE = 0.18;
+    const PLATFORM_FEE = 19;
+
+    const baseAmount = rawPrice;
+    const gstAmount = Math.round(baseAmount * GST_RATE);
+    const totalAmount = baseAmount + gstAmount + PLATFORM_FEE;
 
     useEffect(() => {
         const script = document.createElement("script");
@@ -33,66 +51,73 @@ function PaymentContent() {
         script.async = true;
         script.onload = () => setScriptLoaded(true);
         document.body.appendChild(script);
+
+        return () => {
+            const existingScript = document.body.querySelector(`script[src*="razorpay"]`);
+            if (existingScript) document.body.removeChild(existingScript);
+        };
     }, []);
 
-    const handleRazorpayPayment = async () => {
-        if (!scriptLoaded) {
-            alert("Razorpay SDK failed to load. Are you online?");
-            return;
-        }
-
-        setProcessing(true);
-
+    const handlePayment = async () => {
         try {
-            // 1. Create order on server
-            const res = await fetch("/api/razorpay/order", {
+            setProcessing(true);
+
+            // 1. Create Order
+            const orderRes = await fetch("/api/razorpay/order", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ amount: totalPrice }),
+                body: JSON.stringify({ amount: totalAmount }),
             });
 
-            const order = await res.json();
-
+            const order = await orderRes.json();
             if (order.error) throw new Error(order.error);
 
             // 2. Handle Demo Mode Fallback
             if (order.demo) {
-                console.warn("Running in Demo Mode. Simulating Razorpay Modal...");
+                console.warn("Project in Demo Mode. Simulating Razorpay...");
                 setTimeout(() => {
                     setSuccess(true);
                     setTimeout(() => router.push('/dashboard'), 3000);
-                }, 1500);
+                }, 2000);
                 return;
             }
 
-            // 3. Open Razorpay Checkout Modal
+            // 3. Open Razorpay Modal
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_placeholder",
                 amount: order.amount,
                 currency: order.currency,
-                name: "HealthHub Medical",
+                name: "MedicalHub",
                 description: `Payment for ${planName}`,
+                image: "/logo.png",
                 order_id: order.id,
-                handler: function (response: any) {
-                    // This function runs on payment success
-                    console.log("Payment Success:", response);
-                    setSuccess(true);
-                    setTimeout(() => router.push('/dashboard'), 3000);
+                handler: async function (response: any) {
+                    // Verify payment
+                    const verifyRes = await fetch("/api/razorpay/verify", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(response),
+                    });
+                    const verifyData = await verifyRes.json();
+                    if (verifyData.success) {
+                        setSuccess(true);
+                        setTimeout(() => router.push('/dashboard'), 3000);
+                    } else {
+                        alert("Verification Failed!");
+                    }
                 },
                 prefill: {
-                    name: "Test User",
-                    email: "test@example.com",
-                    contact: "9999999999",
+                    name: "Mukul Anand",
+                    email: "mukul@gmail.com",
+                    contact: "9102774718",
                 },
-                theme: {
-                    color: "#2563EB",
-                },
+                theme: { color: "#2563EB" },
             };
 
             const rzp = new window.Razorpay(options);
             rzp.open();
         } catch (error) {
-            console.error("Payment failed:", error);
+            console.error("Payment error:", error);
             alert("Something went wrong with the payment process.");
         } finally {
             setProcessing(false);
@@ -101,157 +126,176 @@ function PaymentContent() {
 
     if (success) {
         return (
-            <main className={styles.main}>
-                <Navbar />
-                <section className={styles.section} style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <motion.div
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className={styles.card}
-                        style={{ textAlign: 'center', padding: '4rem', maxWidth: '540px', background: '#FFFFFF', borderRadius: '24px', boxShadow: 'var(--shadow-deep)' }}
-                    >
-                        <div style={{ margin: '0 auto 2rem', width: '100px', height: '100px', borderRadius: '50%', background: '#f0fdf4', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <CheckCircle size={56} color="#22c55e" />
-                        </div>
-                        <h1 style={{ fontSize: '2.25rem', fontWeight: '800', marginBottom: '1rem', color: '#0F172A', letterSpacing: '-0.02em' }}>Transaction Successful</h1>
-                        <p style={{ color: '#64748B', fontSize: '1.125rem', marginBottom: '2.5rem', lineHeight: '1.6' }}>
-                            Your booking for <strong>{planName}</strong> is confirmed. A summary has been sent to your email.
-                        </p>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', color: '#2563EB', fontWeight: '600' }}>
-                            <Loader2 className="animate-spin" size={20} />
-                            Redirecting to your patient dashboard...
-                        </div>
-                    </motion.div>
-                </section>
-                <Footer />
-            </main>
+            <div className="min-h-screen bg-white flex items-center justify-center p-4">
+                <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="text-center"
+                >
+                    <div className="h-24 w-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mx-auto mb-8">
+                        <CheckCircle2 size={64} strokeWidth={3} />
+                    </div>
+                    <h1 className="text-4xl font-black text-slate-900 mb-4">Payment Successful!</h1>
+                    <p className="text-slate-500 font-bold mb-8 text-lg">Your appointment has been confirmed. Redirecting to dashboard...</p>
+                    <Loader2 className="animate-spin text-blue-600 mx-auto" size={40} />
+                </motion.div>
+            </div>
         );
     }
 
     return (
-        <main className={styles.main}>
+        <main className="bg-slate-50 min-h-screen">
             <Navbar />
 
-            <section className={styles.section} style={{ padding: '140px 1.5rem 100px', backgroundColor: '#FFFFFF' }}>
-                <div className="container" style={{ maxWidth: '1100px' }}>
+            <section className="pt-32 pb-24">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {/* Header */}
+                    <div className="mb-12">
+                        <Link href="/" className="inline-flex items-center gap-2 text-slate-400 font-black text-sm uppercase tracking-widest hover:text-blue-600 transition-colors mb-4">
+                            <ArrowLeft size={16} /> Back to Plans
+                        </Link>
+                        <h1 className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
+                            Confirm your <span className="text-blue-600">Booking</span>
+                        </h1>
+                        <p className="mt-4 text-slate-500 font-bold text-lg">Secure your health slot with trust and precision.</p>
+                    </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '4rem', alignItems: 'start' }}>
-
-                        {/* Summary Section */}
-                        <div style={{ order: 2 }}>
-                            <div className={styles.card} style={{ background: '#F8FAFC', padding: '2.5rem', borderRadius: '24px', border: '1px solid #E2E8F0', boxShadow: 'var(--shadow-soft)' }}>
-                                <h3 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '2rem', color: '#0F172A' }}>Service Summary</h3>
-
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span style={{ color: '#64748B' }}>Medical Plan</span>
-                                        <span style={{ fontWeight: '700', color: '#0F172A' }}>{planName}</span>
+                    <div className="grid lg:grid-cols-3 gap-10">
+                        {/* Details Column */}
+                        <div className="lg:col-span-2 space-y-8">
+                            {/* Patient Info */}
+                            <div className="bg-white rounded-[2.5rem] border-2 border-slate-100 p-8 shadow-sm">
+                                <div className="flex items-center gap-4 mb-8">
+                                    <div className="h-12 w-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                                        <User size={24} strokeWidth={2.5} />
                                     </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span style={{ color: '#64748B' }}>Base Amount</span>
-                                        <span style={{ fontWeight: '700', color: '#0F172A' }}>₹{numericPrice}</span>
+                                    <h2 className="text-2xl font-black text-slate-900 tracking-tight">Patient Details</h2>
+                                </div>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Full Name</label>
+                                        <input type="text" defaultValue="Mukul Anand" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 font-bold text-slate-700 focus:bg-white focus:border-blue-600 transition-all outline-none" />
                                     </div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span style={{ color: '#64748B' }}>Taxes (GST 18%)</span>
-                                        <span style={{ fontWeight: '700', color: '#0F172A' }}>₹{Math.round(numericPrice * 0.18)}</span>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Phone Number</label>
+                                        <input type="text" defaultValue="+91 9102774718" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 font-bold text-slate-700 focus:bg-white focus:border-blue-600 transition-all outline-none" />
                                     </div>
-
-                                    <div style={{ margin: '1rem 0', borderTop: '1px solid #E2E8F0' }} />
-
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span style={{ fontSize: '1.25rem', fontWeight: '800', color: '#0F172A' }}>Total Payable</span>
-                                        <span style={{ fontSize: '1.75rem', fontWeight: '900', color: '#2563EB' }}>₹{totalPrice}</span>
+                                    <div className="md:col-span-2 space-y-2">
+                                        <label className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Email Address</label>
+                                        <input type="email" defaultValue="mukul@gmail.com" className="w-full bg-slate-50 border-2 border-transparent rounded-2xl px-6 py-4 font-bold text-slate-700 focus:bg-white focus:border-blue-600 transition-all outline-none" />
                                     </div>
                                 </div>
+                            </div>
 
-                                <div style={{ marginTop: '2.5rem', padding: '1.5rem', background: '#FFFFFF', borderRadius: '16px', border: '1px solid #E2E8F0', display: 'flex', gap: '1rem' }}>
-                                    <ShieldCheck size={32} color="#22c55e" style={{ flexShrink: 0 }} />
-                                    <p style={{ fontSize: '0.875rem', color: '#64748B', lineHeight: '1.5' }}>
-                                        Secure end-to-end encrypted payment powered by Razorpay. Your data is handled with 256-bit SSL security.
-                                    </p>
+                            {/* Booking Info */}
+                            <div className="bg-white rounded-[2.5rem] border-2 border-slate-100 p-8 shadow-sm">
+                                <div className="flex items-center gap-4 mb-8">
+                                    <div className="h-12 w-12 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
+                                        <Stethoscope size={24} strokeWidth={2.5} />
+                                    </div>
+                                    <h2 className="text-2xl font-black text-slate-900 tracking-tight">Appointment Info</h2>
+                                </div>
+                                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                                    <div className="p-4 rounded-3xl bg-slate-50/50 border border-slate-100">
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Service</p>
+                                        <p className="text-sm font-black text-slate-800">{planName}</p>
+                                    </div>
+                                    <div className="p-4 rounded-3xl bg-slate-50/50 border border-slate-100">
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Date</p>
+                                        <p className="text-sm font-black text-slate-800 leading-tight">Tomorrow, Jan 23</p>
+                                    </div>
+                                    <div className="p-4 rounded-3xl bg-slate-50/50 border border-slate-100">
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Slot</p>
+                                        <p className="text-sm font-black text-slate-800">11:30 AM</p>
+                                    </div>
+                                    <div className="p-4 rounded-3xl bg-slate-50/50 border border-slate-100">
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Mode</p>
+                                        <p className="text-sm font-black text-blue-600 uppercase">Hospital Visit</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Trust Banner */}
+                            <div className="bg-blue-600 rounded-[2.5rem] p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-blue-200">
+                                <div className="flex items-center gap-6">
+                                    <div className="h-14 w-14 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-md">
+                                        <ShieldCheck size={32} />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-black">Data Encryption Standard</h3>
+                                        <p className="opacity-80 font-bold text-sm">Your medical data and payments are 256-bit AES encrypted.</p>
+                                    </div>
+                                </div>
+                                <div className="flex -space-x-3 isolate">
+                                    {[1, 2, 3].map(i => (
+                                        <div key={i} className="h-12 w-12 rounded-full border-2 border-blue-600 bg-blue-100 flex items-center justify-center text-xs font-black text-blue-600 ring-2 ring-white">
+                                            {i}
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
 
-                        {/* Checkout Action Section */}
-                        <div style={{ order: 1 }}>
-                            <div style={{ marginBottom: '3rem' }}>
-                                <h1 style={{ fontSize: '3rem', fontWeight: '900', marginBottom: '1rem', color: '#0F172A', letterSpacing: '-0.04em' }}>Complete Your <br />Booking</h1>
-                                <p style={{ fontSize: '1.125rem', color: '#64748B', lineHeight: '1.6', maxWidth: '400px' }}>
-                                    Secure your appointment with our world-class medical specialists in just a few clicks.
-                                </p>
-                            </div>
+                        {/* Summary Card */}
+                        <div className="space-y-6">
+                            <div className="bg-white rounded-[2.5rem] border-2 border-slate-100 p-8 shadow-2xl relative sticky top-32">
+                                <h3 className="text-2xl font-black text-slate-900 mb-8 tracking-tight">Payment Summary</h3>
 
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: '#0F172A', fontWeight: '600' }}>
-                                    <div style={{ background: '#2563EB', color: 'white', width: '32px', height: '32px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.9rem' }}>1</div>
-                                    Choose Payment Gateway
+                                <div className="space-y-4 mb-10 pb-10 border-b border-slate-50 font-bold">
+                                    <div className="flex justify-between items-center text-slate-500">
+                                        <span>Base Consultation</span>
+                                        <span className="text-slate-900">₹{baseAmount}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-slate-500">
+                                        <span>GST (18%)</span>
+                                        <span className="text-slate-900">₹{gstAmount}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center text-slate-500">
+                                        <span>Platform Fee</span>
+                                        <span className="text-slate-900">₹{PLATFORM_FEE}</span>
+                                    </div>
                                 </div>
 
-                                <div
-                                    style={{ padding: '2rem', borderRadius: '20px', border: '2px solid #2563EB', background: 'rgba(37, 99, 235, 0.02)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-                                >
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                                        <img src="https://razorpay.com/favicon.png" alt="Razorpay" style={{ width: '32px' }} />
-                                        <div>
-                                            <h4 style={{ fontWeight: '800', color: '#0F172A' }}>Razorpay Secure</h4>
-                                            <p style={{ fontSize: '0.85rem', color: '#64748B' }}>UPI, Cards, Netbanking & Wallets</p>
-                                        </div>
+                                <div className="flex justify-between items-end mb-10">
+                                    <div>
+                                        <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Total Payable</p>
+                                        <p className="text-4xl font-black text-slate-900 tracking-tight leading-none">₹{totalAmount}</p>
                                     </div>
-                                    <div style={{ width: '20px', height: '20px', borderRadius: '50%', border: '5px solid #2563EB' }} />
+                                    <div className="h-10 w-10 flex items-center justify-center text-blue-600 bg-blue-50 rounded-xl">
+                                        <Lock size={20} strokeWidth={2.5} />
+                                    </div>
                                 </div>
 
                                 <button
-                                    onClick={handleRazorpayPayment}
+                                    onClick={handlePayment}
                                     disabled={processing || !scriptLoaded}
-                                    className="btn btn-primary"
-                                    style={{
-                                        width: '100%',
-                                        padding: '1.25rem',
-                                        fontSize: '1.125rem',
-                                        borderRadius: '16px',
-                                        color: '#FFFFFF',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '0.75rem',
-                                        border: 'none'
-                                    }}
+                                    className="w-full py-5 rounded-2xl bg-blue-600 text-white font-black text-lg shadow-xl shadow-blue-100 hover:bg-blue-700 hover:-translate-y-1 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                                 >
                                     {processing ? (
                                         <>
-                                            <Loader2 className="animate-spin" size={22} />
+                                            <Loader2 className="animate-spin" size={24} />
                                             Initializing...
                                         </>
                                     ) : (
                                         <>
-                                            Pay ₹{totalPrice} Now
+                                            Pay ₹{totalAmount} Securely
                                             <ArrowRight size={22} />
                                         </>
                                     )}
                                 </button>
 
-                                <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem', opacity: 0.5 }}>
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" style={{ height: '14px' }} />
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" style={{ height: '20px' }} />
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" style={{ height: '18px' }} />
+                                <div className="mt-8 flex items-center justify-center gap-4 opacity-40 grayscale">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" className="h-4" />
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-6" />
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1200px-UPI-Logo-vector.svg.png" className="h-4" />
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </section>
 
             <Footer />
         </main>
-    );
-}
-
-export default function PaymentPage() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <PaymentContent />
-        </Suspense>
     );
 }

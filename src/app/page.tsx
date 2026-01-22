@@ -1,6 +1,7 @@
 "use client";
 
 import HomeSections from "@/components/HomeSections";
+import DoctorList from "@/components/DoctorList";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Chatbot from "@/components/Chatbot";
@@ -13,6 +14,7 @@ export default function Home() {
     <main className="bg-white">
       <Navbar />
       <HomeSections />
+      <DoctorList />
 
       {/* RETAINING PACKAGES SECTION (Styled with Tailwind to match) */}
       <section className="py-24 bg-white relative overflow-hidden">
