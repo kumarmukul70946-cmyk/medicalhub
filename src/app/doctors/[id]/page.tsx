@@ -2,163 +2,215 @@
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import styles from "@/app/page.module.css";
-import { User, Activity, Clock, ShieldCheck, Mail, Phone, MapPin, Award } from "lucide-react";
+import {
+    User,
+    Activity,
+    Clock,
+    ShieldCheck,
+    Mail,
+    Phone,
+    MapPin,
+    Award,
+    CheckCircle2,
+    Calendar,
+    ArrowLeft,
+    Star,
+    Sparkles
+} from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
 
 // Mock Data
 const doctorsData: any = {
     "dr-sarah-johnson": {
         name: "Dr. Sarah Johnson",
-        specialty: "Cardiologist",
-        exp: "15 Years Experience",
+        specialty: "Senior Cardiologist",
+        exp: "15+ Years Experience",
         availability: "Mon - Fri",
         education: "MD - Cardiology, Johns Hopkins University",
         languages: "English, Spanish",
-        about: "Dr. Sarah Johnson is a renowned Cardiologist with over 15 years of experience in diagnosing and treating complex heart conditions. She specializes in interventional cardiology and has performed over 1,000 successful procedures."
+        rating: 4.9,
+        reviews: 240,
+        about: "Dr. Sarah Johnson is a world-renowned Cardiologist with over 15 years of experience in diagnosing and treating complex heart conditions. She specializes in interventional cardiology and has performed over 1,000 successful procedures."
     },
     "dr-michael-chen": {
         name: "Dr. Michael Chen",
         specialty: "Neurologist",
-        exp: "12 Years Experience",
+        exp: "12+ Years Experience",
         availability: "Tue - Sat",
         education: "DM - Neurology, Harvard Medical School",
         languages: "English, Mandarin",
+        rating: 4.8,
+        reviews: 180,
         about: "Dr. Michael Chen is an expert Neurologist focusing on stroke management and epilepsy. He is dedicated to providing patient-centered care using the latest neurological advancements."
     },
     "dr-emily-davis": {
         name: "Dr. Emily Davis",
         specialty: "Pediatrician",
-        exp: "10 Years Experience",
+        exp: "10+ Years Experience",
         availability: "Mon - Sat",
         education: "MD - Pediatrics, University of Pennsylvania",
         languages: "English, French",
+        rating: 4.7,
+        reviews: 310,
         about: "Dr. Emily Davis loves working with children and ensuring their healthy growth and development. She provides comprehensive pediatric care from newborn issues to adolescent health."
-    },
-    "dr-james-wilson": {
-        name: "Dr. James Wilson",
-        specialty: "Orthopedic Surgeon",
-        exp: "20 Years Experience",
-        availability: "Mon - Fri",
-        education: "MS - Orthopedics, Stanford University",
-        languages: "English, German",
-        about: "Dr. James Wilson is a leading Orthopedic Surgeon specializing in joint replacement and sports injuries. He uses minimally invasive techniques to ensure faster recovery for his patient."
-    },
-    "dr-priya-patel": {
-        name: "Dr. Priya Patel",
-        specialty: "Dermatologist",
-        exp: "8 Years Experience",
-        availability: "Wed - Sun",
-        education: "MD - Dermatology, Yale University",
-        languages: "English, Hindi, Gujarati",
-        about: "Dr. Priya Patel is a skilled Dermatologist treating a wide range of skin, hair, and nail disorders. She is known for her aesthetic treatments and compassionate patient care."
-    },
-    "dr-roberts": {
-        name: "Dr. Roberts",
-        specialty: "General Physician",
-        exp: "25 Years Experience",
-        availability: "Daily",
-        education: "MBBS, MD - Internal Medicine",
-        languages: "English",
-        about: "Dr. Roberts is a highly experienced General Physician dedicated to primary care and preventative medicine. He has a holistic approach to treating chronic diseases."
     }
 };
 
 export default function DoctorProfile() {
     const params = useParams();
     const slug = (Array.isArray(params?.id) ? params.id[0] : params?.id) || "";
-    // Simple normalization to match data keys
     const doctorKey = slug || "dr-sarah-johnson";
     const doctor = doctorsData[doctorKey] || doctorsData["dr-sarah-johnson"];
 
     return (
-        <main className={styles.main} style={{ background: 'var(--background)' }}>
+        <main className="bg-slate-50 min-h-screen selection:bg-blue-100">
             <Navbar />
 
-            <section className={styles.section} style={{ paddingTop: '140px' }}>
-                <div className="container">
-                    <div className={styles.card} style={{ maxWidth: '900px', margin: '0 auto', overflow: 'hidden' }}>
+            <section className="pt-32 pb-24 relative overflow-hidden">
+                {/* Background Art */}
+                <div className="absolute top-0 right-0 -mr-40 h-[100vh] w-[100vh] bg-blue-50/50 rounded-full blur-[120px] pointer-events-none" />
 
-                        {/* Header */}
-                        <div style={{ padding: '2rem', background: 'var(--secondary)', borderBottom: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center', textAlign: 'center' }}>
-                            <div style={{ width: '120px', height: '120px', borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.5rem', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }}>
-                                <User size={60} color="var(--primary)" />
-                            </div>
-                            <div>
-                                <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{doctor.name}</h1>
-                                <p style={{ fontSize: '1.2rem', color: 'var(--primary)', fontWeight: '500' }}>{doctor.specialty}</p>
-                            </div>
-                            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-                                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--secondary-foreground)' }}>
-                                    <ShieldCheck size={18} /> {doctor.exp}
-                                </span>
-                                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--secondary-foreground)' }}>
-                                    <Clock size={18} /> {doctor.availability}
-                                </span>
-                            </div>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+                    {/* Breadcrumb / Back */}
+                    <Link href="/doctors" className="inline-flex items-center gap-2 text-slate-400 font-black text-xs uppercase tracking-[0.2em] mb-12 hover:text-blue-600 transition-colors">
+                        <ArrowLeft size={16} /> Back to Directory
+                    </Link>
+
+                    <div className="grid lg:grid-cols-12 gap-12">
+
+                        {/* Left Side: Basic Info Card */}
+                        <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="bg-white rounded-[3rem] border-2 border-slate-100 p-8 shadow-2xl relative overflow-hidden text-center"
+                            >
+                                <div className="absolute top-0 left-0 w-full h-2 bg-blue-600" />
+
+                                <div className="h-32 w-32 bg-slate-900 text-white rounded-[2.5rem] flex items-center justify-center text-5xl font-black mx-auto mb-8 shadow-2xl">
+                                    {doctor.name.split(' ').pop()?.charAt(0)}
+                                </div>
+
+                                <h1 className="text-2xl font-black text-slate-900 mb-2">{doctor.name}</h1>
+                                <p className="text-blue-600 font-extrabold text-sm uppercase tracking-widest mb-6">{doctor.specialty}</p>
+
+                                <div className="flex items-center justify-center gap-2 mb-8 bg-slate-50 rounded-2xl py-3 border border-slate-100">
+                                    <Star className="text-yellow-500 fill-current" size={18} />
+                                    <span className="text-lg font-black text-slate-700">{doctor.rating}</span>
+                                    <span className="text-sm font-bold text-slate-400">({doctor.reviews} Reviews)</span>
+                                </div>
+
+                                <div className="space-y-4 text-left">
+                                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50/50 border border-transparent">
+                                        <div className="h-10 w-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-blue-600">
+                                            <Mail size={18} />
+                                        </div>
+                                        <span className="text-sm font-bold text-slate-500 truncate">{doctor.name.toLowerCase().replace(/\s/g, '.') + "@medicalhub.com"}</span>
+                                    </div>
+                                    <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50/50 border border-transparent">
+                                        <div className="h-10 w-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-blue-600">
+                                            <ShieldCheck size={18} />
+                                        </div>
+                                        <span className="text-sm font-bold text-slate-500 truncate">Verified Specialist</span>
+                                    </div>
+                                </div>
+
+                                <div className="mt-8">
+                                    <Link href="/book-appointment">
+                                        <button className="w-full py-5 rounded-[2rem] bg-slate-900 text-white font-black text-lg hover:bg-blue-600 transition-all flex items-center justify-center gap-3 shadow-xl">
+                                            Book Visit
+                                            <Calendar size={20} />
+                                        </button>
+                                    </Link>
+                                </div>
+                            </motion.div>
                         </div>
 
-                        {/* Content */}
-                        <div style={{ padding: '2rem', display: 'grid', gap: '2rem', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+                        {/* Right Side: Detailed Profile */}
+                        <div className="lg:col-span-8 space-y-10">
 
-                            <div>
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                    <User size={24} color="var(--primary)" /> About Doctor
-                                </h3>
-                                <p style={{ lineHeight: '1.7', color: 'var(--secondary-foreground)', marginBottom: '2rem' }}>
+                            {/* Summary Card */}
+                            <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                className="bg-white rounded-[3rem] border-2 border-slate-100 p-8 sm:p-14 shadow-sm"
+                            >
+                                <div className="flex items-center gap-4 mb-8">
+                                    <div className="h-12 w-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
+                                        <Sparkles size={24} />
+                                    </div>
+                                    <h2 className="text-3xl font-black text-slate-900 tracking-tight">Professional Profile</h2>
+                                </div>
+
+                                <p className="text-lg text-slate-500 font-bold leading-relaxed mb-12">
                                     {doctor.about}
                                 </p>
 
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                    <Award size={24} color="var(--primary)" /> Education
-                                </h3>
-                                <p style={{ lineHeight: '1.7', color: 'var(--secondary-foreground)', marginBottom: '2rem' }}>
-                                    {doctor.education}
-                                </p>
+                                <div className="grid sm:grid-cols-2 gap-8">
+                                    <div className="space-y-6">
+                                        <div className="flex items-center gap-4">
+                                            <div className="h-10 w-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                                                <Award size={20} />
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Medical Training</p>
+                                                <p className="font-extrabold text-slate-900">{doctor.education}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-4">
+                                            <div className="h-10 w-10 bg-cyan-50 text-cyan-600 rounded-xl flex items-center justify-center">
+                                                <Activity size={20} />
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Global Expertise</p>
+                                                <p className="font-extrabold text-slate-900">{doctor.exp}</p>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                    <Activity size={24} color="var(--primary)" /> Languages
-                                </h3>
-                                <p style={{ lineHeight: '1.7', color: 'var(--secondary-foreground)' }}>
-                                    {doctor.languages}
-                                </p>
+                                    <div className="space-y-6">
+                                        <div className="flex items-center gap-4">
+                                            <div className="h-10 w-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                                                <Clock size={20} />
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Availability</p>
+                                                <p className="font-extrabold text-slate-900">{doctor.availability}, Weekly</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-4">
+                                            <div className="h-10 w-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
+                                                <MapPin size={20} />
+                                            </div>
+                                            <div>
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Main Facility</p>
+                                                <p className="font-extrabold text-slate-900">HealthHub Main OPD, Block 2C</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+
+                            {/* Verification Footer */}
+                            <div className="bg-slate-900 rounded-[3rem] p-10 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
+                                <div className="absolute top-0 right-0 h-40 w-40 bg-blue-600 rounded-full blur-3xl opacity-20 -mr-10 -mt-10" />
+                                <div className="flex items-center gap-6">
+                                    <div className="h-14 w-14 bg-white/20 rounded-[1.25rem] flex items-center justify-center backdrop-blur-md shrink-0">
+                                        <CheckCircle2 size={32} />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-black">Verified Healthcare Expert</h3>
+                                        <p className="text-slate-400 font-bold text-sm">This profile has been verified for medical credentials and valid practice license.</p>
+                                    </div>
+                                </div>
+                                <button className="px-8 py-4 bg-white text-slate-900 rounded-2xl font-black whitespace-nowrap hover:bg-blue-50 transition-all hover:scale-105">
+                                    View License
+                                </button>
                             </div>
-
-                            <div style={{ background: 'var(--background)', padding: '2rem', borderRadius: '1rem', border: '1px solid var(--border)', height: 'fit-content' }}>
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Key Details</h3>
-
-                                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
-                                    <li style={{ display: 'flex', gap: '1rem' }}>
-                                        <Mail size={20} color="var(--primary)" />
-                                        <div>
-                                            <p style={{ fontWeight: '500' }}>Email</p>
-                                            <p style={{ fontSize: '0.9rem', color: 'var(--secondary-foreground)' }}>{doctor.name.toLowerCase().replace(/\s/g, '.').replace('dr.', '')}@healthhub.com</p>
-                                        </div>
-                                    </li>
-                                    <li style={{ display: 'flex', gap: '1rem' }}>
-                                        <Phone size={20} color="var(--primary)" />
-                                        <div>
-                                            <p style={{ fontWeight: '500' }}>Phone</p>
-                                            <p style={{ fontSize: '0.9rem', color: 'var(--secondary-foreground)' }}>+91 9102774718</p>
-                                        </div>
-                                    </li>
-                                    <li style={{ display: 'flex', gap: '1rem' }}>
-                                        <MapPin size={20} color="var(--primary)" />
-                                        <div>
-                                            <p style={{ fontWeight: '500' }}>Location</p>
-                                            <p style={{ fontSize: '0.9rem', color: 'var(--secondary-foreground)' }}>Block A, OPD 2</p>
-                                        </div>
-                                    </li>
-                                </ul>
-
-                                <Link href="/book-appointment">
-                                    <button className="btn btn-primary" style={{ width: '100%' }}>Book Appointment</button>
-                                </Link>
-                            </div>
-
                         </div>
-
                     </div>
                 </div>
             </section>
